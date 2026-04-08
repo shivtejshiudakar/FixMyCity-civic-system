@@ -1,5 +1,10 @@
 import sqlite3
 from config import Config
+import os
+
+class Config:
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    DB_PATH = os.path.join(BASE_DIR, "fixmycity.db")
 
 def get_db_connection():
     conn = sqlite3.connect(Config.DB_PATH)
