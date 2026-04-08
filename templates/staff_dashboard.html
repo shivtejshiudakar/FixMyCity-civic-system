@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block title %}FixMyCity - Staff Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <!-- Header -->
+    <div class="mb-4 d-flex justify-content-between align-items-center">
+        <div>
+            <span class="badge bg-primary-custom text-white mb-2 shadow-sm fs-6 px-3 py-2">
+                <i class="bi bi-person-badge-fill me-2"></i>Staff Portal
+            </span>
+
+            <h2 class="fw-bold font-outfit mb-0">Department Dashboard</h2>
+
+            <p class="text-muted mb-0">
+                Managing issues for: <strong>{{ dept_name }}</strong>
+            </p>
+        </div>
+
+        <!-- Export Button -->
+        <div>
+            <a href="{{ url_for('staff_export_report') }}" class="btn btn-success shadow-sm fw-bold hover-lift">
+                <i class="bi bi-download me-2"></i>Export Report
+            </a>
+        </div>
+    </div>
+
+
+    <!-- Stats Row -->
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 text-center h-100 p-3 bg-white">
+                <div class="card-body">
+                    <h1 class="display-4 fw-bold text-primary-custom">{{ total }}</h1>
+                    <p class="text-muted fw-medium mb-0">Total Department Issues</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 text-center h-100 p-3 bg-white">
+                <div class="card-body">
+                    <h1 class="display-4 fw-bold text-warning">{{ pending }}</h1>
+                    <p class="text-muted fw-medium mb-0">Active / Pending</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 text-center h-100 p-3 bg-white">
+                <div class="card-body">
+                    <h1 class="display-4 fw-bold text-success">{{ resolved }}</h1>
+                    <p class="text-muted fw-medium mb-0">Successfully Resolved</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Issues Table -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
+
+        <div class="card-header bg-white border-0 p-4 d-flex justify-content-between align-items-center">
+
+            <h5 class="fw-bold font-outfit mb-0">
+                <i class="bi bi-list-task me-2 text-primary-custom"></i>
+                Department Issues Queue
+            </h5>
+
+            <div class="input-group" style="max-width: 300px;">
+                <span class="input-group-text bg-light border-0">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="text" class="form-control bg-light border-0" placeholder="Search issues...">
+            </div>
+
+        </div>
+
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="bg-light text-muted small">
+                        <tr>
+                            <th class="ps-4 fw-medium border-0 py-3">ID</th>
+                            <th class="fw-medium border-0 py-3">Issue Title & Category</th>
+                            <th class="fw-medium border-0 py-3">Location</th>
+                            <th class="fw-medium border-0 py-3">Reported By</th>
+                            <th class="fw-medium border-0 py-3">Date</th>
+                            <th class="fw-medium border-0 py-3">Status</th>
+                            <th class="pe-4 text-end fw-medium border-0 py-3">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for issue in issues %}
+
+                        <tr>
+
+                            <td class="ps-4 text-muted small">
+                                #{{ issue.id }}
+                            </td>
+
+                            <td>
+                                <div class="fw-bold">{{ issue.title }}</div>
+
+                                <div class="small text-primary-custom">
+                                    <i class="bi bi-tag me-1"></i>
+                                    {{ issue.category }}
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="text-truncate d-inline-block" style="max-width:150px;">
+                                    <i class="bi bi-geo-alt text-danger me-1"></i>
+                                    {{ issue.location_desc }}
+                                </span>
+                            </td>
+
+                            <td>{{ issue.reporter_name }}</td>
+
+                            <td class="text-muted small">
+                                {{ issue.created_at }}
+                            </td>
+
+                            <td>
+
+                                <span class="badge
+                                    {% if issue.status == 'Pending' %}bg-warning text-dark
+                                    {% elif issue.status == 'In Progress' %}bg-info text-white
+                                    {% elif issue.status == 'Resolved' %}bg-success text-white
+                                    {% elif issue.status == 'Rejected' %}bg-danger text-white
+                                    {% endif %}
+                                    rounded-pill px-3 py-1 fw-medium small">
+
+                                    {{ issue.status }}
+
+                                </span>
+
+                            </td>
+
+                            <td class="pe-4 text-end">
+
+                                <a href="{{ url_for('view_issue', issue_id=issue.id) }}"
+                                    class="btn btn-sm btn-outline-primary-custom rounded-pill px-3">
+
+                                    Review
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+                            <td colspan="7" class="text-center py-5 text-muted">
+
+                                <i class="bi bi-inbox fs-1 d-block mb-3 opacity-50"></i>
+
+                                No issues reported for your department.
+
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

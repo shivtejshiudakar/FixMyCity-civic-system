@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block title %}FixMyCity - Issue #{{ issue.id }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="mb-4">
+        <a href="
+            {% if session.role == 'admin' %}{{ url_for('admin_dashboard') }}
+            {% elif session.role == 'staff' %}{{ url_for('staff_dashboard') }}
+            {% else %}{{ url_for('citizen_dashboard') }}{% endif %}
+        " class="text-decoration-none text-muted mb-3 d-inline-block hover-lift">&larr; Back to Dashboard</a>
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="fw-bold font-outfit mb-0 text-truncate me-3">{{ issue.title }}</h2>
+            <span class="badge fs-6
+                {% if issue.status == 'Pending' %}bg-warning text-dark
+                {% elif issue.status == 'In Progress' %}bg-info text-white
+                {% elif issue.status == 'Resolved' %}bg-success text-white
+                {% elif issue.status == 'Rejected' %}bg-danger text-white
+                {% endif %} rounded-pill px-4 py-2 shadow-sm">
+                {{ issue.status }}
+            </span>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                {% if issue.image_path %}
+                <img src="{{ url_for('static', filename='uploads/' + issue.image_path) }}" class="card-img-top w-100"
+                    alt="Issue Evidence" style="max-height: 400px; object-fit: cover;">
+                {% else %}
+                <div class="bg-light d-flex flex-column align-items-center justify-content-center border-bottom text-muted"
+                    style="height: 250px;">
+                    <i class="bi bi-image-alt fs-1 mb-2 opacity-50"></i>
+                    <p class="mb-0">No image provided</p>
+                </div>
+                {% endif %}
+                <div class="card-body p-4 p-md-5">
+                    <h5 class="fw-bold mb-3">Issue Details</h5>
+                    <p class="text-muted" style="white-space: pre-wrap;">{{ issue.description }}</p>
+
+                    <hr class="my-4 text-muted opacity-25">
+
+                    <div class="row g-4">
+                        <div class="col-sm-6">
+                            <p class="text-muted small mb-1">Category</p>
+                            <p class="fw-bold mb-0 text-primary-custom"><i class="bi bi-tag-fill me-2"></i>{{
+                                issue.category }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="text-muted small mb-1">Location</p>
+                            <p class="fw-bold mb-0"><i class="bi bi-geo-alt-fill me-2 text-danger"></i>{{
+                                issue.location_desc }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="text-muted small mb-1">Reported On</p>
+                            <p class="fw-medium mb-0"><i class="bi bi-calendar-event me-2"></i>{{ issue.created_at
+                                }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="text-muted small mb-1">Reported By</p>
+                            <p class="fw-medium mb-0"><i class="bi bi-person me-2"></i>{{ issue.reporter_name }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Provide actions for staff or admin to update status -->
+            {% if session.role in ['staff', 'admin'] %}
+            <div class="card border-0 shadow-sm rounded-4 mb-4 border-start border-4 border-info">
+                <div class="card-header bg-white p-4 border-0">
+                    <h5 class="fw-bold mb-0">Update Issue Status</h5>
+                </div>
+                <div class="card-body p-4 pt-0">
+                    <form action="{{ url_for('update_issue_status', issue_id=issue.id) }}" method="POST">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="status" class="form-label small text-muted">New Status</label>
+                                <select class="form-select bg-light border-0" id="status" name="status" required>
+                                    <option value="Pending" {% if issue.status=='Pending' %}selected{% endif %}>Pending
+                                    </option>
+                                    <option value="In Progress" {% if issue.status=='In Progress' %}selected{% endif %}>
+                                        In Progress</option>
+                                    <option value="Resolved" {% if issue.status=='Resolved' %}selected{% endif %}>
+                                        Resolved</option>
+                                    <option value="Rejected" {% if issue.status=='Rejected' %}selected{% endif %}>
+                                        Rejected</option>
+                                </select>
+                            </div>
+                            <div class="col-md-8">
+                                <label for="remarks" class="form-label small text-muted">Remarks (Optional)</label>
+                                <input type="text" class="form-control bg-light border-0" id="remarks" name="remarks"
+                                    placeholder="Add a note about the update...">
+                            </div>
+                            <div class="col-12 mt-3 text-end">
+                                <button type="submit" class="btn btn-info text-white fw-bold shadow-sm px-4">Save
+                                    Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-header bg-white p-4 border-0 pb-0">
+                    <h5 class="fw-bold mb-0">Assigned Department</h5>
+                </div>
+                <div class="card-body p-4">
+                    {% if issue.department_name %}
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary-light text-primary-custom rounded-circle p-3 me-3 d-flex justify-content-center align-items-center"
+                            style="width: 50px; height: 50px;">
+                            <i class="bi bi-building fs-4"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">{{ issue.department_name }}</h6>
+                            <p class="text-muted small mb-0">Currently handling this case</p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="text-muted small"><i class="bi bi-clock-history me-2"></i>Awaiting categorization and
+                        assignment.</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white p-4 border-0 pb-2">
+                    <h5 class="fw-bold mb-0">Activity Timeline</h5>
+                </div>
+                <div class="card-body p-4 pt-0">
+                    <div class="position-relative ms-3 mt-3">
+                        <!-- Vertical line -->
+                        <div class="position-absolute h-100 border-start border-2 border-primary-light"
+                            style="left: -1rem; top: 0; transform: translateX(-50%);"></div>
+
+                        {% for update in updates %}
+                        <div class="position-relative mb-4">
+                            <!-- Bullet marker -->
+                            <div class="position-absolute bg-white border border-2 
+                                {% if update.status == 'Pending' %}border-warning
+                                {% elif update.status == 'In Progress' %}border-info
+                                {% elif update.status == 'Resolved' %}border-success
+                                {% elif update.status == 'Rejected' %}border-danger
+                                {% else %}border-primary-custom{% endif %} 
+                                rounded-circle"
+                                style="width: 1rem; height: 1rem; left: -1rem; top: 0.2rem; transform: translateX(-50%);">
+                            </div>
+
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <h6 class="fw-bold mb-0">{{ update.status }}</h6>
+                                    <small class="text-muted" style="font-size: 0.75rem;">{{ update.created_at
+                                        }}</small>
+                                </div>
+                                {% if update.remarks and update.remarks != '' %}
+                                <p class="text-muted small mb-1 bg-light p-2 rounded-3">{{ update.remarks }}</p>
+                                {% endif %}
+                                <p class="text-muted small mb-0" style="font-size: 0.7rem;"><i
+                                        class="bi bi-person me-1"></i>Updated by {{ update.username }}
+                                    {% if update.role in ['staff', 'admin'] %}({{ update.role|capitalize }}){% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

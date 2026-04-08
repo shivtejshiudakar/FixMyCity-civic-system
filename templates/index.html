@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+
+{% block title %}FixMyCity - Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section position-relative overflow-hidden">
+    <div class="container position-relative z-index-1 h-100">
+        <div class="row h-100 align-items-center py-5">
+            <div class="col-lg-6 text-white hero-content">
+                <span
+                    class="badge bg-white text-primary-custom mb-3 py-2 px-3 rounded-pill fw-bold shadow-sm fade-up-1">Smart
+                    Civic Infrastructure</span>
+                <h1 class="display-3 fw-bold font-outfit mb-4 text-shadow fade-up-2 text-white">
+                    FixMyCity – Report. Track. Improve Your City.
+                </h1>
+                <p class="lead mb-4 text-light text-shadow-sm fade-up-3">
+                    A modern platform connecting citizens with municipal authorities. Spot a pothole, broken
+                    streetlight, or garbage issue? Report it instantly and track its resolution.
+                </p>
+                <div class="d-flex gap-3 flex-wrap fade-up-4">
+                    <a href="{{ url_for('citizen_dashboard') }}"
+                        class="btn btn-light btn-lg text-primary-custom fw-bold px-4 py-3 rounded-3 shadow hover-lift">
+                        <i class="bi bi-camera-fill me-2"></i>Report an Issue
+                    </a>
+                    <a href="#how-it-works"
+                        class="btn btn-outline-light btn-lg fw-bold px-4 py-3 rounded-3 hover-lift border-2">
+                        How it Works
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block fade-in-right">
+                <!-- Hero graphics could go here. We'll use CSS background for the section -->
+                <div class="hero-stats-card bg-white p-4 rounded-4 shadow-lg ms-auto scale-up">
+                    <h4 class="font-outfit fw-bold text-dark mb-4">City Improvement Stats</h4>
+                    <div class="d-flex justify-content-between mb-3">
+                        <div class="text-center">
+                            <h2 class="text-primary-custom fw-bold counter" data-target="{{ total_issues }}">
+                                {{ total_issues }}
+                            </h2>
+                            <span class="text-secondary small fw-medium">Issues Reported</span>
+                        </div>
+                        <div class="border-start"></div>
+                        <div class="text-center">
+                            <h2 class="text-success fw-bold counter" data-target="{{ resolved_issues }}">
+                                {{ resolved_issues }}
+                            </h2>
+                            <span class="text-secondary small fw-medium">Issues Resolved</span>
+                        </div>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ resolution_rate }}%;"
+                            aria-valuenow="84" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <p class="text-center text-muted small mt-2 mb-0">{{ resolution_rate }}% Resolution Rate</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-overlay"></div>
+</section>
+
+<!-- Stats / Analytics Snippets Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-md-3 col-6">
+                <div class="stat-box p-4 bg-white rounded-4 shadow-sm h-100 hover-lift">
+                    <div class="icon-wrapper bg-primary-light text-primary-custom rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center"
+                        style="width: 60px; height: 60px;">
+                        <i class="bi bi-exclamation-triangle fs-3"></i>
+                    </div>
+                    <h3 class="fw-bold counter" data-target="4">0</h3>
+                    <p class="text-muted mb-0">City Departments</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-box p-4 bg-white rounded-4 shadow-sm h-100 hover-lift">
+                    <div class="icon-wrapper bg-warning-light text-warning rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center"
+                        style="width: 60px; height: 60px;">
+                        <i class="bi bi-clock-history fs-3"></i>
+                    </div>
+                    <h3 class="fw-bold counter" data-target="15">0</h3>
+                    <p class="text-muted mb-0">Avg Days to Resolve</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-box p-4 bg-white rounded-4 shadow-sm h-100 hover-lift">
+                    <div class="icon-wrapper bg-info-light text-info rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center"
+                        style="width: 60px; height: 60px;">
+                        <i class="bi bi-people fs-3"></i>
+                    </div>
+                    <h3 class="fw-bold counter" data-target="7">0</h3>
+                    <p class="text-muted mb-0">Active Citizens</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-box p-4 bg-white rounded-4 shadow-sm h-100 hover-lift">
+                    <div class="icon-wrapper bg-success-light text-success rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center"
+                        style="width: 60px; height: 60px;">
+                        <i class="bi bi-check-circle fs-3"></i>
+                    </div>
+                    <h3 class="fw-bold counter" data-target="95">0</h3>
+                    <p class="text-muted mb-0">% Verified Reports</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="py-6">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <span class="text-primary-custom fw-bold text-uppercase tracking-wide small">The Process</span>
+            <h2 class="display-5 fw-bold font-outfit mt-2">How FixMyCity Works</h2>
+            <p class="lead text-muted max-w-700 mx-auto mt-3">A transparent, efficient process designed to get civic
+                issues fixed quickly.</p>
+        </div>
+
+        <div class="row g-5 position-relative">
+            <!-- Connecting Line (Desktop only) -->
+            <div class="d-none d-lg-block position-absolute top-50 start-0 w-100 bg-secondary"
+                style="height: 2px; z-index: 0; opacity: 0.2;"></div>
+
+            <div class="col-lg-4 text-center position-relative z-index-1">
+                <div class="step-card bg-white p-4 rounded-4 shadow-sm h-100 hover-lift border border-light">
+                    <div class="step-icon bg-primary-custom text-white rounded-circle shadow mx-auto d-flex align-items-center justify-content-center mb-4"
+                        style="width: 80px; height: 80px; font-size: 2rem;">
+                        1
+                    </div>
+                    <h4 class="fw-bold font-outfit">Report</h4>
+                    <p class="text-muted">Snap a photo of the issue. Enter Your location. Add a brief
+                        description and submit.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center position-relative z-index-1">
+                <div class="step-card bg-white p-4 rounded-4 shadow-sm h-100 hover-lift border border-light">
+                    <div class="step-icon bg-primary-custom text-white rounded-circle shadow mx-auto d-flex align-items-center justify-content-center mb-4"
+                        style="width: 80px; height: 80px; font-size: 2rem;">
+                        2
+                    </div>
+                    <h4 class="fw-bold font-outfit">Route</h4>
+                    <p class="text-muted">Our smart system categorizes the report and automatically routes it to the
+                        correct municipal department.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center position-relative z-index-1">
+                <div class="step-card bg-white p-4 rounded-4 shadow-sm h-100 hover-lift border border-light">
+                    <div class="step-icon bg-success text-white rounded-circle shadow mx-auto d-flex align-items-center justify-content-center mb-4"
+                        style="width: 80px; height: 80px; font-size: 2rem;">
+                        3
+                    </div>
+                    <h4 class="fw-bold font-outfit">Resolve</h4>
+                    <p class="text-muted">City staff update the status as they work. You get real-time notifications
+                        until the issue is fixed.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section py-5 text-white text-center">
+    <div class="container py-5">
+        <h2 class="display-5 fw-bold font-outfit mb-4">See Something? Say Something.</h2>
+        <p class="lead mb-5 max-w-700 mx-auto opacity-75">Join thousands of citizens making our city better every day.
+            It only takes two minutes to register and report your first issue.</p>
+        <a href="/register"
+            class="btn btn-light btn-lg text-primary-custom fw-bold px-5 py-3 rounded-pill shadow-lg hover-lift">
+            Join FixMyCity Today
+        </a>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Counter Animation
+    document.addEventListener("DOMContentLoaded", () => {
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200; // The lower the slower
+
+        const startCounting = (counter) => {
+            const updateCount = () => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText.replace(/,/g, '');
+
+                // Lower inc to slow and higher to speed up
+                const inc = target / speed;
+
+                if (count < target) {
+                    // Add inc to count and output in counter
+                    counter.innerText = Math.ceil(count + inc).toLocaleString();
+                    setTimeout(updateCount, 15);
+                } else {
+                    counter.innerText = target.toLocaleString();
+                }
+            };
+            updateCount();
+        };
+
+        // Use Intersection Observer to trigger counting when visible
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    startCounting(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(counter => {
+            observer.observe(counter);
+        });
+    });
+</script>
+{% endblock %}

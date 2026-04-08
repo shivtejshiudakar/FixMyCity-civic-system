@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}FixMyCity - Log In{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light min-vh-100 d-flex align-items-center">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                    <div class="card-header bg-primary-custom text-white p-4 text-center border-0">
+                        <i class="bi bi-box-arrow-in-right fs-1 mb-2"></i>
+                        <h3 class="fw-bold font-outfit mb-0">Welcome Back</h3>
+                        <p class="mb-0 small opacity-75 mt-1">Log in to track your reports or submit new ones</p>
+                    </div>
+                    <div class="card-body p-4 p-md-5">
+                        <form action="{{ url_for('login') }}" method="POST">
+                            <div class="mb-3">
+                                <label for="username" class="form-label fw-medium text-muted small">Username or
+                                    Email</label>
+                                <input type="text" class="form-control form-control-lg bg-light border-0" id="username"
+                                    name="username" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-medium text-muted small d-flex justify-content-between">
+                                    Password
+                                    <a href="#" class="text-primary-custom text-decoration-none small">Forgot
+                                        Password?</a>
+                                </label>
+                                <input type="password" class="form-control form-control-lg bg-light border-0"
+                                    id="password" name="password" required>
+                            </div>
+                            <button type="submit"
+                                class="btn btn-primary-custom btn-lg w-100 fw-bold rounded-3 shadow hover-lift">Log
+                                In</button>
+                        </form>
+                        <div class="text-center mt-4">
+                            <p class="text-muted small">Don't have an account? <a href="{{ url_for('register') }}"
+                                    class="text-primary-custom fw-bold text-decoration-none">Create one</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

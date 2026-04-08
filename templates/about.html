@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}FixMyCity - About Us{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-primary-custom text-white pt-6 pb-6">
+    <div class="container text-center py-5">
+        <h1 class="display-4 fw-bold font-outfit mb-3">About FixMyCity</h1>
+        <p class="lead max-w-700 mx-auto opacity-75">Bridging the gap between citizens and municipal authorities to
+            create better, safer, and smarter cities.</p>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container py-4">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <!-- Using a solid color block as placeholder since we don't have images yet -->
+                <div
+                    class="rounded-4 shadow-lg h-100 min-vh-50 bg-light border p-5 d-flex align-items-center justify-content-center">
+                    <div class="text-center text-muted">
+                        <i class="bi bi-building fs-1 mb-3 text-primary-custom"></i>
+                        <h4 class="font-outfit">City Infrastructure</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <span class="text-primary-custom fw-bold text-uppercase tracking-wide small">Our Story</span>
+                <h2 class="fw-bold font-outfit mt-2 mb-4">Born from Civic Necessity</h2>
+                <p class="text-muted mb-4 text-justify">FixMyCity was created with a simple premise: citizens are the
+                    best eyes and ears of a city. For too long, reporting a pothole, a broken streetlight, or illegal
+                    dumping meant navigating a maze of phone numbers, emails, and bureaucratic red tape.</p>
+                <p class="text-muted mb-4">We've transformed this outdated process into a streamlined, digital-first
+                    experience. Our platform allows anyone with a smartphone or computer to instantly report an issue,
+                    track its progress, and see the results—fostering transparency and accountability in local
+                    government.</p>
+                <div class="d-flex gap-4 mt-5">
+                    <div class="border-start border-primary border-4 ps-3">
+                        <h3 class="fw-bold text-dark mb-0 counter" data-target="50">0</h3><span
+                            class="fs-4 text-dark">+</span>
+                        <p class="text-muted small mb-0">Cities Supported</p>
+                    </div>
+                    <div class="border-start border-success border-4 ps-3">
+                        <h3 class="fw-bold text-dark mb-0 counter" data-target="100000">0</h3><span
+                            class="fs-4 text-dark">+</span>
+                        <p class="text-muted small mb-0">Issues Resolved</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
