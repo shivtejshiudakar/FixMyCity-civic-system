@@ -676,13 +676,27 @@ def staff_export_report():
         }
     )
 
-
-@app.route('/admin/settings')
+@app.route('/admin/delete_issue/<int:issue_id>', methods=['POST'])
 @login_required
 @role_required('admin')
-def admin_settings():
-    return render_template('admin_settings.html')
+def delete_issue(issue_id):
+    conn = get_db_connection()
+
+    # Delete related status updates first (important for foreign key)
+    conn.execute('DELETE FROM status_updates WHERE issue_id = ?', (issue_id,))
+
+    # Delete issue
+    conn.execute('DELETE FROM issues WHERE id = ?', (issue_id,))
+
+    conn.commit()
+    conn.close()
+
+    flash('Issue deleted successfully.', 'success')
+    return redirect(url_for('admin_dashboard'))
+
+
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
